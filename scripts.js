@@ -171,6 +171,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 button.style.gridColumn = 'auto';
             }
         });
+
+        // Reset the disabled state for remaining ungrouped buttons
+        buttons.forEach((button) => {
+            if (!button.classList.contains('clicked') && !groupedButtons.has(button)) {
+                button.classList.remove('disabled'); // Ensure ungrouped buttons are not disabled
+            }
+        });
     }
 
     // Function to replace original buttons with grouped buttons upon game over
@@ -198,13 +205,20 @@ document.addEventListener('DOMContentLoaded', () => {
         allButtons.forEach((btn) => btn.remove());
     }
 
+    // Function to shuffle the buttons
+    function shuffleButtons() {
+        const container = document.querySelector('.grid-container');
+        const buttonArray = Array.from(buttons);
+        for (let i = buttonArray.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [buttonArray[i], buttonArray[j]] = [buttonArray[j], buttonArray[i]];
+        }
+        buttonArray.forEach((button) => container.appendChild(button));
+    }
+
     // Add click event listener to shuffle button
     shuffleButton.addEventListener('click', () => {
-        buttons.forEach((button) => {
-            if (!groupedButtons.has(button)) {
-                button.style.order = Math.floor(Math.random() * buttons.length); // Apply new order
-            }
-        });
+        shuffleButtons(); // Shuffle buttons when shuffle button is clicked
     });
 
     // Add click event listener to deselect all button
@@ -219,106 +233,62 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (clickCount < maxClicks) {
             buttons.forEach((btn) => {
-                if (btn.classList.contains('disabled') && !groupedButtons.has(btn)) {
+                if (!btn.classList.contains('disabled')) {
                     btn.classList.remove('disabled');
                 }
             });
         }
 
-        updateButtonStates(); // Update button states to reflect changes
+        updateButtonStates();
     });
 
     // Add click event listener to submit button
     submitButton.addEventListener('click', () => {
-        if (submitButton.disabled) {
-            return; // Prevent any action if the button is disabled
-        }
+        if (clickCount === maxClicks) {
+            if (areAllClickedInSameGroup()) {
+                moveButtonsToNextAvailableRow(); // Move buttons to next available row
+            } else {
+                // Handle incorrect grouping
+                lives--;
+                updateLives(); // Update lives display
+            }
 
-        if (areAllClickedInSameGroup()) {
-            moveButtonsToNextAvailableRow();
-        } else {
-            lives--;
-            updateLives();
+            // Reset click count and clicked state
+            buttons.forEach((button) => {
+                button.classList.remove('clicked');
+                button.style.backgroundColor = '#efefe6'; // Reset background color
+                button.classList.remove('disabled'); // Ensure buttons are not disabled
+            });
+            clickCount = 0;
+            updateButtonStates();
         }
+    });
 
-        // Reset clicked buttons
-        buttons.forEach((button) => {
+    // Add click event listener to each button
+    buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+            if (button.classList.contains('disabled')) {
+                return;
+            }
+
             if (button.classList.contains('clicked')) {
                 button.classList.remove('clicked');
                 button.style.backgroundColor = '#efefe6'; // Reset background color
-            }
-        });
-
-        clickCount = 0;
-        updateButtonStates(); // Update button states after submission
-    });
-
-    // Add click event listener to word buttons
-    buttons.forEach((button) => {
-        button.addEventListener('click', () => {
-            if (groupedButtons.has(button)) {
-                return; // Prevent interaction with already grouped buttons
-            }
-
-            if (!button.classList.contains('clicked') && clickCount < maxClicks) {
-                button.classList.add('clicked');
-                button.style.backgroundColor = '#5a594e'; // Change background color
-                clickCount++;
-            } else if (button.classList.contains('clicked')) {
-                button.classList.remove('clicked');
-                button.style.backgroundColor = '#efefe6'; // Reset background color
                 clickCount--;
-            }
-
-            if (clickCount === maxClicks) {
-                buttons.forEach((btn) => {
-                    if (!btn.classList.contains('clicked') && !groupedButtons.has(btn)) {
-                        btn.classList.add('disabled');
-                    }
-                });
             } else {
-                buttons.forEach((btn) => {
-                    if (btn.classList.contains('disabled') && !groupedButtons.has(btn)) {
-                        btn.classList.remove('disabled');
-                    }
-                });
-            }
-
-            // Display 'One away' message if 3 out of 4 are from the same group
-            if (clickCount === maxClicks - 1) {
-                const clickedButtons = Array.from(buttons).filter((btn) =>
-                    btn.classList.contains('clicked')
-                );
-                const groups = new Set(
-                    clickedButtons.map((btn) => btn.getAttribute('group'))
-                );
-                if (groups.size === 1) {
-                    const oneAwayMessage = document.createElement('div');
-                    oneAwayMessage.className = 'one-away-message';
-                    oneAwayMessage.textContent = 'One away';
-                    document.body.appendChild(oneAwayMessage);
-
-                    setTimeout(() => {
-                        oneAwayMessage.remove(); // Remove the message after 4 seconds
-                    }, 4000);
+                if (clickCount < maxClicks) {
+                    button.classList.add('clicked');
+                    button.style.backgroundColor = '#5a594e'; // Change color on click
+                    clickCount++;
                 }
             }
 
-            updateButtonStates(); // Update button states after click
+            updateButtonStates();
         });
     });
 
-    // Shuffle buttons continuously until mouse movement is detected
-    let shuffleInterval = setInterval(() => {
-        shuffleButton.click(); // Simulate shuffle button click
-    }, 100); // Shuffle every 100ms
-
-    // Stop shuffling when mouse movement is detected
-    const stopShufflingOnMouseMovement = () => {
-        clearInterval(shuffleInterval); // Clear the interval to stop shuffling
-        window.removeEventListener('mousemove', stopShufflingOnMouseMovement); // Remove the mousemove event listener
-    };
-
-    // Add event listener for mouse movement
-    window.addEventListener('mousemove', stopShufflingOnMouseMovement);
+    // Initialize button states
+    updateButtonStates();
+    updateLives();
+    shuffleButtons(); // Shuffle buttons when page loads
 });
