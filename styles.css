@@ -1,0 +1,200 @@
+body {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #3e3c3c;
+  margin: 0;
+  user-select: none;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 50px;
+  font-weight: bold;
+  color: #fffdfd;
+  text-transform: uppercase;
+  margin-bottom: 60px;
+  text-align: center; /* Center text */
+  transition: opacity 0.5s; /* Smooth transition for opacity */
+}
+
+.title span {
+  display: block; /* Make each part of the title appear on a new line */
+}
+
+.title .main {
+  font-size: 50px; /* Adjust font size for "MAHE" */
+}
+
+.title .sub {
+  font-size: 40px; /* Adjust font size for "CONNECTIONS" */
+  margin-top: -10px; /* Adjust margin to fine-tune positioning */
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 160px);
+  grid-template-rows: repeat(auto-fill, 91px); /* Adjust rows to auto-fill based on content */
+  gap: 10px;
+  width: 670px;
+  height: auto; /* Adjust height to fit content */
+  position: relative;
+}
+
+.word-button {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  background-color: #efefe6; /* Default background color */
+  color: #333;
+  font-size: 19px;
+  font-weight: bold;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s; /* Transition for smooth effect */
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 160px;
+  height: 91px;
+}
+
+.word-button.clicked {
+  background-color: #5a594e; /* Background color when clicked */
+  color: #fff;
+}
+
+.word-button:active {
+  background-color: #c0c0c0;
+  transform: scale(0.98);
+}
+
+.word-button.disabled {
+  cursor: default;
+  pointer-events: none;
+  user-select: none;
+}
+
+.grouped-button {
+  background-color: #d0d0d0;
+  color: #000;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 24px; /* Large font for group name */
+  font-weight: bold;
+  border: 2px solid #000;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%; /* Full width of its container */
+  height: 91px; /* Keep the height same as individual buttons */
+  position: relative;
+  grid-column: span 4; /* Ensure it spans all columns */
+}
+
+.grouped-button .button-names {
+  font-size: 12px; /* Smaller font for button names */
+  margin-top: 8px;
+  color: #000;
+}
+
+.options {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+  flex-direction: row;
+}
+
+.option-button {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  background-color: #fff;
+  color: #000;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase; /* Text in all caps */
+  border: 2px solid #000; /* Black border */
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  align-items: center;
+  width: 80px;
+  height: 40px;
+}
+
+.option-button:active {
+  background-color: #e0e0e0;
+  transform: scale(0.98);
+}
+
+.option-button.disabled {
+  background-color: #a8a7a7;
+  color: #000000;
+  border: 2px solid #000000;
+  cursor: default;
+}
+
+.lives-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.lives-container img {
+  width: 30px;
+  height: 30px;
+}
+
+.game-over-message {
+  display: none; /* Hidden by default */
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: black;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  z-index: 1000; /* Ensure it is on top of other elements */
+}
+
+.grouped-button.complete {
+  background-color: #b0b0b0; /* Change color to indicate completion */
+  border-color: #333;
+}
+
+.one-away-message {
+  display: none; /* Hidden by default */
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: black;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  z-index: 1000; /* Ensure it is on top of other elements */
+}
+
