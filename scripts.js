@@ -250,29 +250,75 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         clickCount = 0;
-        updateButtonStates();
+        updateButtonStates(); // Update button states after submission
     });
 
-    // Add click event listener to individual word buttons
+    // Add click event listener to word buttons
     buttons.forEach((button) => {
         button.addEventListener('click', () => {
-            if (!groupedButtons.has(button)) {
-                if (button.classList.contains('clicked')) {
-                    button.classList.remove('clicked');
-                    button.style.backgroundColor = '#efefe6'; // Reset background color
-                    clickCount--;
-                } else {
-                    if (clickCount < maxClicks) {
-                        button.classList.add('clicked');
-                        button.style.backgroundColor = '#5a594e'; // Change background color when clicked
-                        clickCount++;
-                    }
-                }
-                updateButtonStates(); // Update button states after click
+            if (groupedButtons.has(button)) {
+                return; // Prevent interaction with already grouped buttons
             }
+
+            if (!button.classList.contains('clicked') && clickCount < maxClicks) {
+                button.classList.add('clicked');
+                button.style.backgroundColor = '#5a594e'; // Change background color
+                clickCount++;
+            } else if (button.classList.contains('clicked')) {
+                button.classList.remove('clicked');
+                button.style.backgroundColor = '#efefe6'; // Reset background color
+                clickCount--;
+            }
+
+            if (clickCount === maxClicks) {
+                buttons.forEach((btn) => {
+                    if (!btn.classList.contains('clicked') && !groupedButtons.has(btn)) {
+                        btn.classList.add('disabled');
+                    }
+                });
+            } else {
+                buttons.forEach((btn) => {
+                    if (btn.classList.contains('disabled') && !groupedButtons.has(btn)) {
+                        btn.classList.remove('disabled');
+                    }
+                });
+            }
+
+            // Display 'One away' message if 3 out of 4 are from the same group
+            if (clickCount === maxClicks - 1) {
+                const clickedButtons = Array.from(buttons).filter((btn) =>
+                    btn.classList.contains('clicked')
+                );
+                const groups = new Set(
+                    clickedButtons.map((btn) => btn.getAttribute('group'))
+                );
+                if (groups.size === 1) {
+                    const oneAwayMessage = document.createElement('div');
+                    oneAwayMessage.className = 'one-away-message';
+                    oneAwayMessage.textContent = 'One away';
+                    document.body.appendChild(oneAwayMessage);
+
+                    setTimeout(() => {
+                        oneAwayMessage.remove(); // Remove the message after 4 seconds
+                    }, 4000);
+                }
+            }
+
+            updateButtonStates(); // Update button states after click
         });
     });
 
-    // Initialize lives display
-    updateLives();
+    // Shuffle buttons continuously until mouse movement is detected
+    let shuffleInterval = setInterval(() => {
+        shuffleButton.click(); // Simulate shuffle button click
+    }, 100); // Shuffle every 100ms
+
+    // Stop shuffling when mouse movement is detected
+    const stopShufflingOnMouseMovement = () => {
+        clearInterval(shuffleInterval); // Clear the interval to stop shuffling
+        window.removeEventListener('mousemove', stopShufflingOnMouseMovement); // Remove the mousemove event listener
+    };
+
+    // Add event listener for mouse movement
+    window.addEventListener('mousemove', stopShufflingOnMouseMovement);
 });
