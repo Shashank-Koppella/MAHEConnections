@@ -92,7 +92,27 @@ document.addEventListener('DOMContentLoaded', () => {
         const clickedButtons = Array.from(buttons).filter((button) => button.classList.contains('clicked'));
         if (clickedButtons.length !== maxClicks) return false; // Ensure exactly 4 buttons are clicked
         const groups = new Set(clickedButtons.map((button) => button.getAttribute('group')));
-        return groups.size === 1;
+        return groups.size === 1; // True if all 4 buttons belong to the same group
+    }
+
+    // New function to check if exactly 3 out of 4 clicked buttons are in the same group
+    function isOneAway() {
+        const clickedButtons = Array.from(buttons).filter((button) => button.classList.contains('clicked'));
+        if (clickedButtons.length !== maxClicks) return false; // Ensure exactly 4 buttons are clicked
+        const groupCounts = {};
+
+        // Count occurrences of each group
+        clickedButtons.forEach((button) => {
+            const group = button.getAttribute('group');
+            if (groupCounts[group]) {
+                groupCounts[group]++;
+            } else {
+                groupCounts[group] = 1;
+            }
+        });
+
+        // Check if any group has exactly 3 buttons
+        return Object.values(groupCounts).includes(3);
     }
 
     function createGroupedButton(group, buttonNames) {
@@ -103,7 +123,14 @@ document.addEventListener('DOMContentLoaded', () => {
             '3': 'Bluedove Enterprises in HB3',
             '4': 'Words starting with branches in MAHE '
         };
+        const groupColors = {
+            '1': '#FFC107', // Yellow for group 1
+            '2': '#2196F3', // Blue for group 2
+            '3': '#4CAF50', // Green for group 3
+            '4': '#FF5722'  // Orange for group 4
+        };
         const groupName = groupNames[group] || `Group ${group}`; // Get the group name or default
+        const groupColor = groupColors[group] || '#d0d0d0'; // Default color if not defined
 
         const gridContainer = document.querySelector('.grid-container');
 
@@ -116,6 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
         groupedButton.setAttribute('data-group', group);
         groupedButton.style.gridRow = 'span 1'; // Ensure it occupies one grid row
         groupedButton.style.gridColumn = 'span 4'; // Ensure it occupies full width
+        groupedButton.style.backgroundColor = groupColor; // Set the background color based on group
 
         const groupNameElem = document.createElement('div');
         groupNameElem.textContent = groupName;
@@ -126,7 +154,8 @@ document.addEventListener('DOMContentLoaded', () => {
         buttonNamesElem.textContent = buttonNames.join(', ');
         groupedButton.appendChild(buttonNamesElem);
 
-        gridContainer.appendChild(groupedButton);
+        // Append the grouped button to the top of the grid container
+        gridContainer.prepend(groupedButton); // Use prepend to add the button to the top
         groupedButtons.add(groupedButton);
 
         setTimeout(() => {
@@ -187,87 +216,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         for (let i = visibleButtons.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
-            [visibleButtons[i], visibleButtons[j]] = [visibleButtons[j], visibleButtons[i]];
+            container.appendChild(visibleButtons[j]);
         }
-
-        visibleButtons.forEach((button) => container.appendChild(button));
     }
 
-    function checkForCompletion() {
-        const remainingButtons = Array.from(document.querySelectorAll('.word-button'));
-        
-        // Check if there are no remaining buttons and if all grouped-buttons have been created
-        if (remainingButtons.length === 0 && groupedButtons.size === document.querySelectorAll('.grouped-button').length) {
-          if (lives > 0) { // Check if there is at least one life remaining
-            goodJobMessage.style.display = 'block'; // Show the good job message
-          }
-        }
-      }
-
-    function displayOneAwayMessage() {
-        oneAwayMessage.style.display = 'block'; // Show the one away message
-        setTimeout(() => {
-            oneAwayMessage.style.display = 'none'; // Hide the message after 1.5 seconds
-        }, 1500);
-    }
-
-    function checkOneAway() {
-        const clickedButtons = Array.from(buttons).filter((button) => button.classList.contains('clicked'));
-        if (clickedButtons.length === maxClicks) {
-            const groups = clickedButtons.map((button) => button.getAttribute('group'));
-            const uniqueGroups = new Set(groups);
-            if (uniqueGroups.size === 1) {
-                // All four buttons are from the same group
-                return false;
-            }
-            if (uniqueGroups.size === 2) {
-                // Check if exactly three are from the same group
-                const groupCounts = {};
-                groups.forEach(group => groupCounts[group] = (groupCounts[group] || 0) + 1);
-                const maxCount = Math.max(...Object.values(groupCounts));
-                return maxCount === 3; // Exactly 3 buttons from the same group
-            }
-        }
-        return false;
-    }
-
+    // Initial shuffle
     shuffleButtons();
-
-    shuffleButton.addEventListener('click', () => {
-        shuffleButtons();
-    });
-
-    deselectAllButton.addEventListener('click', () => {
-        buttons.forEach((button) => {
-            if (button.classList.contains('clicked')) {
-                button.classList.remove('clicked');
-                button.style.color = '#000'; // Reset text color
-                clickCount--;
-            }
-        });
-        updateButtonStates();
-    });
-
-    submitButton.addEventListener('click', () => {
-        if (areAllClickedInSameGroup()) {
-            moveButtonsToNextAvailableRow();
-            clickCount = 0; // Reset click count after successful submission
-            updateButtonStates();
-        } else if (checkOneAway()) {
-            displayOneAwayMessage();
-            lives--;
-            updateLives();
-        } else {
-            lives--;
-            updateLives();
-        }
-    });
 
     buttons.forEach((button) => {
         button.addEventListener('click', () => {
             if (!button.classList.contains('clicked') && clickCount < maxClicks) {
                 button.classList.add('clicked');
-                button.style.color = '#fff'; // Change text color on click
+                button.style.color = '#fff'; // Change text color to white
                 clickCount++;
             } else if (button.classList.contains('clicked')) {
                 button.classList.remove('clicked');
@@ -277,4 +237,58 @@ document.addEventListener('DOMContentLoaded', () => {
             updateButtonStates();
         });
     });
+
+    deselectAllButton.addEventListener('click', () => {
+        buttons.forEach((button) => {
+            if (button.classList.contains('clicked')) {
+                button.classList.remove('clicked');
+                button.style.color = '#000'; // Reset text color
+            }
+        });
+        clickCount = 0;
+        updateButtonStates();
+    });
+
+    submitButton.addEventListener('click', () => {
+        if (areAllClickedInSameGroup()) {
+            moveButtonsToNextAvailableRow();
+            clickCount = 0; // Reset click count after successful grouping
+        } else {
+            lives--;
+            updateLives();
+
+            // Display 'One Away' message only if 3 out of 4 buttons are from the same group
+            if (isOneAway()) {
+                displayOneAwayMessage();
+            }
+        }
+        updateButtonStates();
+    });
+
+    shuffleButton.addEventListener('click', () => {
+        shuffleButtons();
+    });
+
+    function replaceTitle() {
+        title.innerHTML = '<span style="color: #000;">MAHE</span> CONNECTIONS';
+        title.style.textAlign = 'center'; // Center the text
+    }
+
+    function displayOneAwayMessage() {
+        oneAwayMessage.style.display = 'block';
+        setTimeout(() => {
+            oneAwayMessage.style.display = 'none';
+        }, 1500);
+    }
+
+    function checkForCompletion() {
+        const remainingWordButtons = Array.from(document.querySelectorAll('.word-button:not(.disabled)'));
+
+        if (remainingWordButtons.length === 0 && lives > 0) {
+            setTimeout(() => {
+                goodJobMessage.style.display = 'block';
+                replaceTitle();
+            }, 2000);
+        }
+    }
 });
