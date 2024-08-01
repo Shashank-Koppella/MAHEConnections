@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function createGroupedButton(group, buttonNames) {
         const existingGroupedButton = document.querySelector(`.grouped-button[data-group="${group}"]`);
         const groupNames = {
-            '1': 'Endings of lab softwares',
+            '1': 'Facilities found in Marena',
             '2': 'Things in hostel',
             '3': 'Bluedove Enterprises in HB3',
             '4': 'Words starting with branches in MAHE '
