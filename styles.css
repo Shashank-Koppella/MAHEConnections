@@ -371,3 +371,27 @@ body {
     font-size: 3vw;
   }
 }
+
+@media screen and (orientation: portrait) {
+  .option-button {
+    width: 12.0vw; /* Reduced width for portrait mode */
+    height: 3vh; /* Adjust as needed */
+    font-size: 1.5vw;
+  }
+}
+
+@media screen and (orientation: portrait) {
+  .option-button.deselect-all {
+    width: 12.0vw; /* Reduced width for portrait mode */
+    height: 5vh; /* Adjust as needed */
+    font-size: 1.5vw;
+  }
+}
+
+@media screen and (orientation: portrait) {
+  .lives-container .life-icon {
+    width: 10.0vw; /* Reduced width for portrait mode */
+    height: 6vh; /* Adjust as needed */
+    font-size: 1.5vw;
+  }
+}
