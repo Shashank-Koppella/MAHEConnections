@@ -48,7 +48,7 @@ body {
 .grid-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* Responsive grid */
-  gap: 1vw; /* Use viewport width for gap */
+  gap: 0.5vw; /* Use viewport width for gap */
   width: 100%;
   max-width: 38.8vw;
   height: auto;
@@ -365,14 +365,14 @@ body {
 
 @media screen and (orientation: portrait) {
   .word-button {
-    width: 22.0vw; /* Reduced width for portrait mode */
-    height: 7.5vh; /* Adjust as needed */
+    width: 22.0vw; /* Adjusted width for portrait mode */
+    height: 7.5vh; /* Adjusted height for portrait mode */
     font-size: 3vw;
   }
 
   .option-button {
     width: 12.0vw; /* Consistent width for option buttons in portrait mode */
-    height: 6vh; /* Set a consistent height */
+    height: 6vh; /* Consistent height for option buttons */
     font-size: 2vw;
   }
 
@@ -395,5 +395,8 @@ body {
   .title .sub {
     font-size: 11vw; /* Adjust font size for portrait mode */
   }
-}
 
+  .grid-container {
+    margin-bottom: 4vh; /* Added extra gap between the grid and options buttons */
+  }
+}
