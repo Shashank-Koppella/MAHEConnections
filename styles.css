@@ -413,7 +413,12 @@ body {
   .grouped-button {
     width: calc(100% - 0.5vw); /* Full width of the grid minus the gap */
     height: 7.5vh; /* Same height as word buttons in portrait mode */
-    font-size: 2vw; /* Responsive font size */
+    font-size: 4.5vw; /* Responsive font size */
     grid-column: span 4; /* Span all columns in the grid */
   }
+
+  .grouped-button .button-names {
+    font-size: 2vw; /* Responsive font size */
+  }
+
 }
