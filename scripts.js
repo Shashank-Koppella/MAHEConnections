@@ -94,8 +94,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const groupNames = {
             '1': 'Endings of lab softwares',
             '2': 'Things in hostel',
-            '3': 'Things found in Siri',
-            '4': 'Words starting with first year subjects'
+            '3': 'Bluedove Enterprises in HB3',
+            '4': 'Words starting with branches in MAHE '
         };
         const groupName = groupNames[group] || `Group ${group}`; // Get the group name or default
 
