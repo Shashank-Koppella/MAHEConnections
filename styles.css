@@ -7,70 +7,85 @@ body {
   background-color: #3e3c3c;
   margin: 0;
   user-select: none;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
 .main-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  max-width: 800px;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .title {
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  font-size: 50px;
+  font-size: 3vw;
   font-weight: bold;
   color: #fffdfd;
   text-transform: uppercase;
-  margin-bottom: 60px;
-  text-align: center; /* Center text */
-  transition: opacity 0.5s; /* Smooth transition for opacity */
+  margin-bottom: 30px;
+  text-align: center;
+  transition: opacity 0.5s;
 }
 
 .title span {
-  display: block; /* Make each part of the title appear on a new line */
+  display: block;
 }
 
 .title .main {
-  font-size: 50px; /* Adjust font size for "MAHE" */
+  font-size: 3vw;
 }
 
 .title .sub {
-  font-size: 40px; /* Adjust font size for "CONNECTIONS" */
-  margin-top: -10px; /* Adjust margin to fine-tune positioning */
+  font-size: 2.5vw;
+  margin-top: -10px;
 }
 
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(4, 160px);
-  grid-template-rows: repeat(auto-fill, 91px); /* Adjust rows to auto-fill based on content */
+  grid-template-columns: repeat(4, 1fr); /* Adjust the number of columns */
   gap: 10px;
-  width: 670px;
-  height: auto; /* Adjust height to fit content */
-  position: relative;
+  width: 100%;
+  max-width: 670px;
+  height: auto;
+  padding: 1vw;
+  box-sizing: border-box;
+  justify-content: center; /* Center grid items horizontally */
+  align-items: center; /* Center grid items vertically (if needed) */
 }
 
 .word-button {
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  background-color: #efefe6; /* Default background color */
+  background-color: #efefe6;
   color: #333;
-  font-size: 19px;
+  font-size: 1.2vw; /* Adjust the font size if needed */
   font-weight: bold;
   text-transform: uppercase;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.3s; /* Transition for smooth effect */
+  transition: background-color 0.3s, transform 0.3s;
   text-align: center;
-  display: flex;
+  display: grid;
   justify-content: center;
   align-items: center;
-  width: 160px;
-  height: 91px;
+  width: 12vw; /* Width relative to viewport width */
+  height: 12vh; /* Height relative to viewport height */
+  padding: 0 10px; /* Adjust padding to reduce horizontal length */
+  box-sizing: border-box;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis; /* Ensure text does not overflow */
 }
 
 .word-button.clicked {
-  background-color: #5a594e; /* Background color when clicked */
-  color: #fff;
+  color: #fff; /* Change text color to white when clicked */
+  background-color: #5a594e; /* Background color remains as desired */
+  border: 2px solid #5a594e; /* Add a border to make the button more visible */
 }
 
 .word-button:active {
@@ -79,16 +94,15 @@ body {
 }
 
 .word-button.disabled {
-  cursor: default;
-  pointer-events: none;
-  user-select: none;
+  cursor: not-allowed;
+  opacity: 0.5; /* Make it semi-transparent when disabled */
 }
 
 .grouped-button {
   background-color: #d0d0d0;
   color: #000;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  font-size: 24px; /* Large font for group name */
+  font-size: 2vw;
   font-weight: bold;
   border: 2px solid #000;
   border-radius: 8px;
@@ -97,43 +111,96 @@ body {
   align-items: center;
   justify-content: center;
   text-align: center;
-  width: 100%; /* Full width of its container */
-  height: 91px; /* Keep the height same as individual buttons */
+  width: 100%;
+  height: 100%; /* Ensures full size within grid */
   position: relative;
-  grid-column: span 4; /* Ensure it spans all columns */
+  grid-column: span 4;
+  padding: 10px;
+  box-sizing: border-box;
+  opacity: 0;
+  transition: opacity 0.5s, transform 0.5s; /* Smooth transition */
 }
 
+
 .grouped-button .button-names {
-  font-size: 12px; /* Smaller font for button names */
+  font-size: 1vw;
   margin-top: 8px;
   color: #000;
 }
+
+.grouped-button.revealed {
+  opacity: 1;
+  transform: translateY(0); /* Move to original position */
+}
+
+.grouped-button.hidden {
+  opacity: 0;
+  transform: translateY(10px); /* Start with some offset */
+}
+
 
 .options {
   display: flex;
   gap: 15px;
   margin-top: 20px;
   flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .option-button {
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   background-color: #fff;
   color: #000;
-  font-size: 12px;
+  font-size: 0.8vw; /* Smaller font size for larger screens */
   font-weight: bold;
-  text-transform: uppercase; /* Text in all caps */
-  border: 2px solid #000; /* Black border */
-  border-radius: 20px;
+  text-transform: uppercase;
+  border: 2px solid #000;
+  border-radius: 50px; /* High border radius for a rounded appearance */
   cursor: pointer;
   transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
   text-align: center;
   display: flex;
   justify-content: center;
-  margin-top: 20px;
   align-items: center;
-  width: 80px;
-  height: 40px;
+  width: 5vw; /* Width adjusted to maintain responsiveness */
+  height: auto; /* Allow height to adjust based on padding */
+  padding: 2vh 1.2vw; /* Adjusted padding for a balanced circular look */
+  box-sizing: border-box;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Adjustments for smaller screens */
+@media screen and (max-width: 768px) {
+  .option-button {
+    font-size: 1.2vw; /* Adjust font size for tablets */
+    width: 8vw; /* Adjust width for smaller screens */
+    padding: 3vh 1.8vw; /* Adjusted padding for a balanced look */
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .option-button {
+    font-size: 1.5vw; /* Further increase font size for very small screens */
+    width: 10vw; /* Adjust width for very small screens */
+    padding: 3vh 1.8vw; /* Adjusted padding for a balanced look */
+  }
+}
+
+.option-button.deselect-all {
+  font-size: 0.7vw; /* Reduce font size specifically for "Deselect all" */
+  line-height: 1.2; /* Maintain line height for text alignment */
+  text-align: center;
+  display: flex;
+  flex-direction: column; /* Stack text vertically */
+  justify-content: center; /* Center text vertically */
+  padding: 0; /* Remove padding */
+}
+
+.option-button.deselect-all span {
+  display: block; /* Ensure each line of text is on its own line */
 }
 
 .option-button:active {
@@ -150,19 +217,20 @@ body {
 
 .lives-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
+  justify-content: center; /* Center icons horizontally */
+  align-items: center; /* Center icons vertically */
+  gap: 10px; /* Space between icons */
   margin-top: 20px;
 }
 
-.lives-container img {
+.lives-container .life-icon {
   width: 30px;
   height: 30px;
+  transition: opacity 1s, transform 1s; /* Smooth transition for fading and falling */
 }
 
 .game-over-message {
-  display: none; /* Hidden by default */
+  display: none;
   position: fixed;
   top: 20px;
   left: 50%;
@@ -172,18 +240,35 @@ body {
   padding: 10px 20px;
   border-radius: 5px;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  font-size: 16px;
+  font-size: 1vw; /* Adjust font size relative to viewport width */
   font-weight: bold;
-  z-index: 1000; /* Ensure it is on top of other elements */
+  z-index: 1000;
+  text-align: center; /* Center text within the message box */
+  box-sizing: border-box;
 }
 
 .grouped-button.complete {
-  background-color: #b0b0b0; /* Change color to indicate completion */
+  background-color: #b0b0b0;
   border-color: #333;
 }
 
-.one-away-message {
-  display: none; /* Hidden by default */
+@keyframes heartFall {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(1vh); /* Adjust distance relative to viewport height */
+    opacity: 0;
+  }
+}
+
+.heart-fall {
+  animation: heartFall 1s forwards; /* Ensure animation ends at the last frame */
+}
+
+.good-job-message {
+  display: none;
   position: fixed;
   top: 20px;
   left: 50%;
@@ -193,7 +278,27 @@ body {
   padding: 10px 20px;
   border-radius: 5px;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  font-size: 16px;
+  font-size: 1vw; /* Adjust font size relative to viewport width */
   font-weight: bold;
-  z-index: 1000; /* Ensure it is on top of other elements */
+  z-index: 1000;
+  text-align: center; /* Center text within the message box */
+  box-sizing: border-box;
+}
+
+.one-away-message {
+  display: none;
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: black;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 1.5vw;
+  font-weight: bold;
+  z-index: 1000;
+  text-align: center;
+  box-sizing: border-box;
 }
