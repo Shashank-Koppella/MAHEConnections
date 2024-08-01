@@ -6,55 +6,70 @@ document.addEventListener('DOMContentLoaded', () => {
     const livesContainer = document.querySelector('.lives-container'); // Lives container
     const gameOverMessage = document.getElementById('game-over-message'); // Game over message
     const title = document.getElementById('title'); // Title element
+    const goodJobMessage = document.getElementById('good-job-message'); // Good job message
+    const oneAwayMessage = document.getElementById('one-away-message'); // One away message
     let clickCount = 0;
     const maxClicks = 4;
     const groupedButtons = new Set(); // To track already grouped buttons
-    const occupiedRows = new Set(); // To track rows occupied by grouped buttons
     let lives = 4; // Initial number of lives
 
-    // Function to update lives display
     function updateLives() {
-        livesContainer.querySelectorAll('.life-icon').forEach((icon, index) => {
-            icon.style.visibility = index < lives ? 'visible' : 'hidden';
+        const heartIcons = livesContainer.querySelectorAll('.life-icon');
+        
+        // Remove the falling animation class from all hearts
+        heartIcons.forEach(icon => {
+            // Only remove the falling class if the heart has not yet fallen
+            if (!icon.classList.contains('heart-fall')) {
+                icon.style.opacity = '1'; // Ensure all hearts are visible
+            }
         });
-
+        
+        // Apply the falling animation to the current life lost
+        if (lives < 4) {
+            const lostHeart = heartIcons[3 - lives]; // Select the heart representing the lost life
+            lostHeart.classList.add('heart-fall');
+            lostHeart.style.opacity = '0'; // Hide after animation
+        }
+        
+        // Deselect all buttons when a life is lost
+        if (lives < 4) {
+            buttons.forEach((button) => {
+                if (button.classList.contains('clicked')) {
+                    button.classList.remove('clicked');
+                    button.style.color = '#000'; // Reset text color
+                }
+            });
+            clickCount = 0; // Reset click count after life is lost
+            updateButtonStates();
+        }
+        
         // Show game over message if lives reach 0
         if (lives <= 0) {
             gameOverMessage.style.display = 'block';
-            setTimeout(replaceButtonsWithGroupedButtons, 2000); // Replace buttons after 2 seconds
-            setTimeout(revealAllGroups, 2000); // Call revealAllGroups after 2 seconds
-            setTimeout(replaceTitle, 2000); // Replace title after 2 seconds
+            setTimeout(() => {
+                replaceButtonsWithGroupedButtons();
+                revealAllGroups();
+                replaceTitle();
+            }, 2000); // Replace buttons and reveal all groups after 2 seconds
         }
     }
 
-    // Function to reveal all groups with a delay
     function revealAllGroups() {
-        const groupedButtonElems = Array.from(
-            document.querySelectorAll('.grouped-button')
-        ); // Get all grouped buttons
-        groupedButtonElems.forEach((groupedButton, index) => {
-            groupedButton.style.visibility = 'visible';
+        const groupedButtonElems = Array.from(document.querySelectorAll('.grouped-button')); // Get all grouped buttons
+        let delay = 0; // Initial delay
+
+        groupedButtonElems.forEach((groupedButton) => {
+            setTimeout(() => {
+                // Ensure the button is visible and revealed
+                groupedButton.classList.remove('hidden');
+                groupedButton.classList.add('revealed');
+                groupedButton.style.opacity = '1'; // Ensure opacity is set to 1 for visibility
+            }, delay); // Apply the current delay
+
+            delay += 1000; // Increment the delay for the next button
         });
     }
 
-    // Function to replace title
-    function replaceTitle() {
-        // Remove the current title element
-        title.style.display = 'none';
-
-        // Create a new title element with the same content
-        const newTitleElement = document.createElement('h1');
-        newTitleElement.className = 'title new-title';
-        newTitleElement.innerHTML = `
-            <span class="main">MAHE</span>
-            <span class="sub">CONNECTIONS</span>
-        `;
-
-        // Insert the new title element in the same place
-        title.parentNode.insertBefore(newTitleElement, title.nextSibling);
-    }
-
-    // Function to update button states
     function updateButtonStates() {
         if (clickCount === maxClicks) {
             submitButton.disabled = false;
@@ -66,31 +81,22 @@ document.addEventListener('DOMContentLoaded', () => {
             submitButton.style.cursor = 'default'; // Change cursor to default when disabled
         }
 
-        if (Array.from(buttons).some((button) =>
-            button.classList.contains('clicked')
-        )) {
+        if (Array.from(buttons).some((button) => button.classList.contains('clicked'))) {
             deselectAllButton.classList.remove('disabled');
         } else {
             deselectAllButton.classList.add('disabled');
         }
     }
 
-    // Function to check if all clicked buttons are in the same group
     function areAllClickedInSameGroup() {
-        const clickedButtons = Array.from(buttons).filter((button) =>
-            button.classList.contains('clicked')
-        );
-        const groups = new Set(
-            clickedButtons.map((button) => button.getAttribute('group'))
-        );
+        const clickedButtons = Array.from(buttons).filter((button) => button.classList.contains('clicked'));
+        if (clickedButtons.length !== maxClicks) return false; // Ensure exactly 4 buttons are clicked
+        const groups = new Set(clickedButtons.map((button) => button.getAttribute('group')));
         return groups.size === 1;
     }
 
-    // Function to create or update the grouped button
-    function createGroupedButton(group, rowIndex, buttonNames) {
-        const existingGroupedButton = document.querySelector(
-            `.grouped-button[data-group="${group}"]`
-        );
+    function createGroupedButton(group, buttonNames) {
+        const existingGroupedButton = document.querySelector(`.grouped-button[data-group="${group}"]`);
         const groupNames = {
             '1': 'Endings of lab softwares',
             '2': 'Things in hostel',
@@ -101,194 +107,174 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const gridContainer = document.querySelector('.grid-container');
 
-        // If a grouped button for this group already exists, just update it
         if (existingGroupedButton) {
-            existingGroupedButton.style.gridRow = rowIndex; // Ensure it is in the correct row
             return;
         }
 
-        // Create a new grouped button
         const groupedButton = document.createElement('button');
-        groupedButton.className = 'grouped-button';
+        groupedButton.className = 'grouped-button hidden'; // Start hidden for animation
         groupedButton.setAttribute('data-group', group);
-        groupedButton.style.gridRow = rowIndex; // Ensure it is in the correct row
+        groupedButton.style.gridRow = 'span 1'; // Ensure it occupies one grid row
+        groupedButton.style.gridColumn = 'span 4'; // Ensure it occupies full width
 
-        // Add group name
         const groupNameElem = document.createElement('div');
         groupNameElem.textContent = groupName;
         groupedButton.appendChild(groupNameElem);
 
-        // Add button names
         const buttonNamesElem = document.createElement('div');
         buttonNamesElem.className = 'button-names';
         buttonNamesElem.textContent = buttonNames.join(', ');
         groupedButton.appendChild(buttonNamesElem);
 
-        // Add new grouped button to the grid container
         gridContainer.appendChild(groupedButton);
-
-        // Add to groupedButtons set
         groupedButtons.add(groupedButton);
+
+        setTimeout(() => {
+            groupedButton.classList.remove('hidden');
+            groupedButton.classList.add('revealed');
+        }, 0);
     }
 
-    // Function to move buttons to the next available row
     function moveButtonsToNextAvailableRow() {
-        const gridContainer = document.querySelector('.grid-container');
-        const clickedButtons = Array.from(buttons).filter((button) =>
-            button.classList.contains('clicked')
-        );
-
-        // Sort buttons by their order of appearance
-        clickedButtons.sort((a, b) => {
-            const indexA = Array.from(buttons).indexOf(a);
-            const indexB = Array.from(buttons).indexOf(b);
-            return indexA - indexB;
-        });
-
-        // Determine the next available row
-        let rowIndex = 1;
-        while (occupiedRows.has(rowIndex)) {
-            rowIndex++;
-        }
-        occupiedRows.add(rowIndex);
-
-        // Get the group and button names
+        const clickedButtons = Array.from(buttons).filter((button) => button.classList.contains('clicked'));
+      
         const group = clickedButtons[0].getAttribute('group');
         const buttonNames = clickedButtons.map((button) => button.textContent);
-
-        // Create the grouped button
-        createGroupedButton(group, rowIndex, buttonNames);
-
-        // Remove the original buttons that are now grouped
+      
+        createGroupedButton(group, buttonNames);
+      
         clickedButtons.forEach((button) => {
-            button.remove(); // Remove from the DOM
+          button.remove(); // Remove from the DOM
         });
+      
+        // Reinitialize buttons after removal
+        updateButtonStates();
+        resetButtonStates();
+        shuffleButtons(); // Shuffle remaining word-buttons after grouping
+        checkForCompletion(); // Check if all buttons have been grouped
+      }
 
-        // Ensure grouped buttons remain in place
+    function resetButtonStates() {
+        // Reset the state of remaining buttons
         buttons.forEach((button) => {
-            if (!groupedButtons.has(button)) {
-                button.style.gridRow = 'auto';
-                button.style.gridColumn = 'auto';
-            }
-        });
-
-        // Reset the disabled state for remaining ungrouped buttons
-        buttons.forEach((button) => {
-            if (!button.classList.contains('clicked') && !groupedButtons.has(button)) {
-                button.classList.remove('disabled'); // Ensure ungrouped buttons are not disabled
-            }
+            button.classList.remove('clicked');
+            button.style.color = '#000'; // Reset text color
         });
     }
 
-    // Function to replace original buttons with grouped buttons upon game over
     function replaceButtonsWithGroupedButtons() {
         const allButtons = Array.from(document.querySelectorAll('.word-button'));
-        let currentRowIndex = 1; // Start with the first row
+        const gridContainer = document.querySelector('.grid-container');
 
-        allButtons.forEach((button) => {
-            const group = button.getAttribute('group');
+        const allGroups = [...new Set(allButtons.map((button) => button.getAttribute('group')))];
+
+        allGroups.forEach((group) => {
             const buttonNames = Array.from(
                 document.querySelectorAll(`.word-button[group="${group}"]`)
             ).map((btn) => btn.textContent);
 
-            // Determine the next available row for the current group
-            while (occupiedRows.has(currentRowIndex)) {
-                currentRowIndex++;
-            }
-            occupiedRows.add(currentRowIndex);
-
-            // Create the grouped button for this group
-            createGroupedButton(group, currentRowIndex, buttonNames);
+            createGroupedButton(group, buttonNames);
         });
 
-        // Remove original buttons
         allButtons.forEach((btn) => btn.remove());
     }
 
-    // Function to shuffle the buttons
     function shuffleButtons() {
         const container = document.querySelector('.grid-container');
-        const buttonArray = Array.from(buttons);
-        for (let i = buttonArray.length - 1; i > 0; i--) {
+        const visibleButtons = Array.from(
+            container.querySelectorAll('.word-button:not(.disabled)')
+        );
+
+        for (let i = visibleButtons.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
-            [buttonArray[i], buttonArray[j]] = [buttonArray[j], buttonArray[i]];
+            [visibleButtons[i], visibleButtons[j]] = [visibleButtons[j], visibleButtons[i]];
         }
-        buttonArray.forEach((button) => container.appendChild(button));
+
+        visibleButtons.forEach((button) => container.appendChild(button));
     }
 
-    // Add click event listener to shuffle button
+    function checkForCompletion() {
+        const remainingButtons = Array.from(document.querySelectorAll('.word-button'));
+        
+        // Check if there are no remaining buttons and if all grouped-buttons have been created
+        if (remainingButtons.length === 0 && groupedButtons.size === document.querySelectorAll('.grouped-button').length) {
+          if (lives > 0) { // Check if there is at least one life remaining
+            goodJobMessage.style.display = 'block'; // Show the good job message
+          }
+        }
+      }
+
+    function displayOneAwayMessage() {
+        oneAwayMessage.style.display = 'block'; // Show the one away message
+        setTimeout(() => {
+            oneAwayMessage.style.display = 'none'; // Hide the message after 1.5 seconds
+        }, 1500);
+    }
+
+    function checkOneAway() {
+        const clickedButtons = Array.from(buttons).filter((button) => button.classList.contains('clicked'));
+        if (clickedButtons.length === maxClicks) {
+            const groups = clickedButtons.map((button) => button.getAttribute('group'));
+            const uniqueGroups = new Set(groups);
+            if (uniqueGroups.size === 1) {
+                // All four buttons are from the same group
+                return false;
+            }
+            if (uniqueGroups.size === 2) {
+                // Check if exactly three are from the same group
+                const groupCounts = {};
+                groups.forEach(group => groupCounts[group] = (groupCounts[group] || 0) + 1);
+                const maxCount = Math.max(...Object.values(groupCounts));
+                return maxCount === 3; // Exactly 3 buttons from the same group
+            }
+        }
+        return false;
+    }
+
+    shuffleButtons();
+
     shuffleButton.addEventListener('click', () => {
-        shuffleButtons(); // Shuffle buttons when shuffle button is clicked
+        shuffleButtons();
     });
 
-    // Add click event listener to deselect all button
     deselectAllButton.addEventListener('click', () => {
         buttons.forEach((button) => {
             if (button.classList.contains('clicked')) {
                 button.classList.remove('clicked');
-                button.style.backgroundColor = '#efefe6'; // Reset background color
+                button.style.color = '#000'; // Reset text color
                 clickCount--;
             }
         });
-
-        if (clickCount < maxClicks) {
-            buttons.forEach((btn) => {
-                if (!btn.classList.contains('disabled')) {
-                    btn.classList.remove('disabled');
-                }
-            });
-        }
-
         updateButtonStates();
     });
 
-    // Add click event listener to submit button
     submitButton.addEventListener('click', () => {
-        if (clickCount === maxClicks) {
-            if (areAllClickedInSameGroup()) {
-                moveButtonsToNextAvailableRow(); // Move buttons to next available row
-            } else {
-                // Handle incorrect grouping
-                lives--;
-                updateLives(); // Update lives display
-            }
-
-            // Reset click count and clicked state
-            buttons.forEach((button) => {
-                button.classList.remove('clicked');
-                button.style.backgroundColor = '#efefe6'; // Reset background color
-                button.classList.remove('disabled'); // Ensure buttons are not disabled
-            });
-            clickCount = 0;
+        if (areAllClickedInSameGroup()) {
+            moveButtonsToNextAvailableRow();
+            clickCount = 0; // Reset click count after successful submission
             updateButtonStates();
+        } else if (checkOneAway()) {
+            displayOneAwayMessage();
+            lives--;
+            updateLives();
+        } else {
+            lives--;
+            updateLives();
         }
     });
 
-    // Add click event listener to each button
     buttons.forEach((button) => {
         button.addEventListener('click', () => {
-            if (button.classList.contains('disabled')) {
-                return;
-            }
-
-            if (button.classList.contains('clicked')) {
+            if (!button.classList.contains('clicked') && clickCount < maxClicks) {
+                button.classList.add('clicked');
+                button.style.color = '#fff'; // Change text color on click
+                clickCount++;
+            } else if (button.classList.contains('clicked')) {
                 button.classList.remove('clicked');
-                button.style.backgroundColor = '#efefe6'; // Reset background color
+                button.style.color = '#000'; // Reset text color
                 clickCount--;
-            } else {
-                if (clickCount < maxClicks) {
-                    button.classList.add('clicked');
-                    button.style.backgroundColor = '#5a594e'; // Change color on click
-                    clickCount++;
-                }
             }
-
             updateButtonStates();
         });
     });
-
-    // Initialize button states
-    updateButtonStates();
-    updateLives();
-    shuffleButtons(); // Shuffle buttons when page loads
 });
