@@ -367,7 +367,7 @@ body {
 @media screen and (orientation: portrait) {
   .word-button {
     width: 22.0vw; /* Reduced width for portrait mode */
-    height: 9vh; /* Adjust as needed */
+    height: 7.5vh; /* Adjust as needed */
     font-size: 3vw;
   }
 }
@@ -375,8 +375,8 @@ body {
 @media screen and (orientation: portrait) {
   .option-button {
     width: 12.0vw; /* Reduced width for portrait mode */
-    height: 3vh; /* Adjust as needed */
-    font-size: 1.5vw;
+    height: 1.5vh; /* Adjust as needed */
+    font-size: 4vw;
   }
 }
 
@@ -384,7 +384,7 @@ body {
   .option-button.deselect-all {
     width: 12.0vw; /* Reduced width for portrait mode */
     height: 5vh; /* Adjust as needed */
-    font-size: 1.5vw;
+    font-size: 4vw;
   }
 }
 
@@ -395,3 +395,16 @@ body {
     font-size: 1.5vw;
   }
 }
+
+@media screen and (orientation: portrait) {
+  .title .main{
+    font-size: 11vw;
+  }
+}
+
+@media screen and (orientation: portrait) {
+  .title .sub{
+    font-size: 11vw;
+  }
+}
+
