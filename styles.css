@@ -7,7 +7,7 @@ body {
   background-color: #3e3c3c;
   margin: 0;
   user-select: none;
-  padding: 5px; /* Reduced padding */
+  padding: 10px;
   box-sizing: border-box;
 }
 
@@ -15,19 +15,19 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 90vw;
+  width: 90vw; /* Use 90% of the viewport width for responsiveness */
   max-width: 800px;
-  padding: 1.5vw; /* Reduced padding */
+  padding: 2vw; /* Use viewport width for padding */
   box-sizing: border-box;
 }
 
 .title {
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  font-size: 3vw;
+  font-size: 3vw; /* Adjust the font size relative to viewport width */
   font-weight: bold;
   color: #fffdfd;
   text-transform: uppercase;
-  margin-bottom: 2.5vw; /* Reduced margin */
+  margin-bottom: 3vw; /* Use viewport width for margin */
   text-align: center;
   transition: opacity 0.5s;
 }
@@ -37,22 +37,22 @@ body {
 }
 
 .title .main {
-  font-size: 3vw;
+  font-size: 3vw; /* Consistent font size */
 }
 
 .title .sub {
-  font-size: 2.5vw;
-  margin-top: -0.5vw; /* Reduced margin-top */
+  font-size: 2.5vw; /* Adjusted for responsiveness */
+  margin-top: -1vw; /* Use viewport width for margin */
 }
 
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* Adjust the number of columns */
-  gap: 0.75vw; /* Reduced gap between buttons */
+  grid-template-columns: repeat(4, 1fr); /* Responsive grid */
+  gap: 1vw; /* Use viewport width for gap */
   width: 100%;
-  max-width: 670px;
+  max-width: 38.8vw;
   height: auto;
-  padding: 0.8vw; /* Padding around the grid */
+  padding: 0vw; /* Use viewport width for padding */
   box-sizing: border-box;
   justify-content: center;
   align-items: center;
@@ -62,20 +62,19 @@ body {
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   background-color: #efefe6;
   color: #333;
-  font-size: 1.2vw;
+  font-size: 1.2vw; /* Adjust font size for responsiveness */
   font-weight: bold;
   text-transform: uppercase;
   border: none;
-  border-radius: 0.8vw;
+  border-radius: 0.8vw; /* Use viewport width for border-radius */
   cursor: pointer;
   transition: background-color 0.3s, transform 0.3s;
   text-align: center;
   display: grid;
   justify-content: center;
   align-items: center;
-  width: 12vw;
-  height: 12vh;
-  padding: 0 0.8vw; /* Padding inside the button */
+  width: 12vw; /* Responsive width */
+  height: 12vh; /* Responsive height */
   box-sizing: border-box;
   overflow: hidden;
   white-space: nowrap;
@@ -83,9 +82,9 @@ body {
 }
 
 .word-button.clicked {
-  color: #fff;
-  background-color: #5a594e;
-  border: 0.2vw solid #5a594e;
+  color: #fff; /* Text color when clicked */
+  background-color: #5a594e; /* Desired background color */
+  border: 0.2vw solid #5a594e; /* Responsive border */
 }
 
 .word-button:active {
@@ -102,28 +101,28 @@ body {
   background-color: #d0d0d0;
   color: #000;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  font-size: 2vw;
+  font-size: 2vw; /* Adjust font size for responsiveness */
   font-weight: bold;
-  border: 0.2vw solid #000;
-  border-radius: 0.8vw;
+  border: 0.2vw solid #000; /* Responsive border */
+  border-radius: 0.8vw; /* Responsive border-radius */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
   width: 100%;
-  height: 100%;
+  height: 100%; /* Full size within grid */
   position: relative;
   grid-column: span 4;
-  padding: 0.8vw; /* Reduced padding */
+  padding: 1vw; /* Use viewport width for padding */
   box-sizing: border-box;
   opacity: 0;
   transition: opacity 0.5s, transform 0.5s;
 }
 
 .grouped-button .button-names {
-  font-size: 1vw;
-  margin-top: 0.5vw; /* Reduced margin-top */
+  font-size: 1vw; /* Responsive font size */
+  margin-top: 0.8vw; /* Responsive margin */
   color: #000;
 }
 
@@ -134,13 +133,13 @@ body {
 
 .grouped-button.hidden {
   opacity: 0;
-  transform: translateY(1vw);
+  transform: translateY(1vw); /* Responsive offset */
 }
 
 .options {
   display: flex;
-  gap: 1vw;
-  margin-top: 1.5vw; /* Reduced margin-top */
+  gap: 1.5vw; /* Responsive gap */
+  margin-top: 2vw; /* Responsive margin */
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
@@ -150,20 +149,20 @@ body {
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   background-color: #fff;
   color: #000;
-  font-size: 0.8vw;
+  font-size: 0.8vw; /* Responsive font size */
   font-weight: bold;
   text-transform: uppercase;
-  border: 0.2vw solid #000;
-  border-radius: 5vw;
+  border: 0.2vw solid #000; /* Responsive border */
+  border-radius: 5vw; /* High border radius for a rounded appearance */
   cursor: pointer;
   transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
   text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 5vw;
+  width: 5vw; /* Responsive width */
   height: auto;
-  padding: 1.5vh 1vw; /* Reduced padding */
+  padding: 2vh 1.2vw; /* Responsive padding */
   box-sizing: border-box;
   overflow: hidden;
   white-space: nowrap;
@@ -171,8 +170,8 @@ body {
 }
 
 .option-button.deselect-all {
-  font-size: 0.7vw;
-  line-height: 1.2;
+  font-size: 0.7vw; /* Reduce font size for "Deselect all" */
+  line-height: 1.2; /* Maintain line height */
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -181,7 +180,7 @@ body {
 }
 
 .option-button.deselect-all span {
-  display: block;
+  display: block; /* Each line of text is on its own line */
 }
 
 .option-button:active {
@@ -192,7 +191,7 @@ body {
 .option-button.disabled {
   background-color: #a8a7a7;
   color: #000000;
-  border: 0.2vw solid #000000;
+  border: 0.2vw solid #000000; /* Responsive border */
   cursor: default;
 }
 
@@ -200,28 +199,28 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 0.8vw; /* Reduced gap */
-  margin-top: 1.5vw; /* Reduced margin-top */
+  gap: 1vw; /* Responsive gap */
+  margin-top: 2vw; /* Responsive margin */
 }
 
 .lives-container .life-icon {
-  width: 2.5vw; /* Slightly reduced size */
-  height: 2.5vw; /* Slightly reduced size */
+  width: 3vw; /* Responsive width */
+  height: 3vw; /* Responsive height */
   transition: opacity 1s, transform 1s;
 }
 
 .game-over-message {
   display: none;
   position: fixed;
-  top: 4vh; /* Reduced top positioning */
+  top: 5vh; /* Responsive positioning */
   left: 50%;
   transform: translateX(-50%);
   background-color: black;
   color: white;
-  padding: 0.8vh 1.8vw; /* Reduced padding */
-  border-radius: 0.5vw;
+  padding: 1vh 2vw; /* Responsive padding */
+  border-radius: 0.5vw; /* Responsive border-radius */
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  font-size: 1vw;
+  font-size: 1vw; /* Responsive font size */
   font-weight: bold;
   z-index: 1000;
   text-align: center;
@@ -239,7 +238,7 @@ body {
     opacity: 1;
   }
   100% {
-    transform: translateY(10vh);
+    transform: translateY(10vh); /* Responsive distance */
     opacity: 0;
   }
 }
@@ -251,15 +250,15 @@ body {
 .good-job-message {
   display: none;
   position: fixed;
-  top: 4vh; /* Reduced top positioning */
+  top: 5vh; /* Responsive positioning */
   left: 50%;
   transform: translateX(-50%);
   background-color: black;
   color: white;
-  padding: 0.8vh 1.8vw; /* Reduced padding */
-  border-radius: 0.5vw;
+  padding: 1vh 2vw; /* Responsive padding */
+  border-radius: 0.5vw; /* Responsive border-radius */
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  font-size: 1vw;
+  font-size: 1vw; /* Responsive font size */
   font-weight: bold;
   z-index: 1000;
   text-align: center;
@@ -269,15 +268,15 @@ body {
 .one-away-message {
   display: none;
   position: fixed;
-  top: 4vh; /* Reduced top positioning */
+  top: 5vh; /* Responsive positioning */
   left: 50%;
   transform: translateX(-50%);
   background-color: black;
   color: white;
-  padding: 0.8vh 1.8vw; /* Reduced padding */
-  border-radius: 0.5vw;
+  padding: 1vh 2vw; /* Responsive padding */
+  border-radius: 0.5vw; /* Responsive border-radius */
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  font-size: 1.5vw;
+  font-size: 1.5vw; /* Responsive font size */
   font-weight: bold;
   z-index: 1000;
   text-align: center;
@@ -288,81 +287,79 @@ body {
 @media screen and (max-width: 768px) {
   .title {
     font-size: 4vw;
-    margin-bottom: 3.5vw; /* Adjusted margin */
+    margin-bottom: 4vw;
   }
 
   .word-button {
     width: 14vw;
     height: 14vh;
     font-size: 1.5vw;
-    padding: 0 0.6vw; /* Reduced padding */
   }
 
   .grouped-button {
     font-size: 2.5vw;
-    padding: 1.5vw; /* Reduced padding */
+    padding: 2vw;
   }
 
   .options {
-    gap: 1.8vw; /* Adjusted gap */
+    gap: 2vw;
   }
 
   .option-button {
     font-size: 1vw;
-    padding: 2vh 1.8vw; /* Reduced padding */
+    padding: 2.5vh 2vw;
     width: 10vw;
   }
 
   .lives-container .life-icon {
-    width: 3.5vw; /* Reduced size */
-    height: 3.5vw; /* Reduced size */
+    width: 4vw;
+    height: 4vw;
   }
 
   .game-over-message,
   .good-job-message,
   .one-away-message {
     font-size: 2vw;
-    padding: 1.2vh 2.8vw; /* Reduced padding */
+    padding: 1.5vh 3vw;
   }
 }
 
 @media screen and (max-width: 480px) {
   .title {
     font-size: 5vw;
-    margin-bottom: 4.5vw; /* Adjusted margin */
+    margin-bottom: 5vw;
   }
 
   .word-button {
     width: 18vw;
     height: 18vh;
     font-size: 2vw;
-    padding: 0 1vw; /* Reduced padding */
   }
 
   .grouped-button {
     font-size: 3vw;
-    padding: 2vw; /* Reduced padding */
+    padding: 2.5vw;
   }
 
   .options {
-    gap: 2.5vw; /* Adjusted gap */
+    gap: 3vw;
   }
 
   .option-button {
     font-size: 1.2vw;
-    padding: 2.8vh 2vw; /* Reduced padding */
+    padding: 3vh 2.5vw;
     width: 15vw;
   }
 
   .lives-container .life-icon {
-    width: 4.5vw; /* Reduced size */
-    height: 4.5vw; /* Reduced size */
+    width: 5vw;
+    height: 5vw;
   }
 
   .game-over-message,
   .good-job-message,
   .one-away-message {
     font-size: 2.5vw;
-    padding: 1.8vh 3.5vw; /* Reduced padding */
+    padding: 2vh 4vw;
   }
 }
