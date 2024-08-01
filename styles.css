@@ -398,7 +398,23 @@ body {
 
   .grid-container {
     margin-bottom: 6vh; /* Added extra gap between the grid and options buttons */
-    display: flex; /* Ensure margin is applied correctly */
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Keep the grid layout */
+    gap: 0.5vw; /* Use viewport width for gap */
+    width: 100%;
+    max-width: 38.8vw;
+    height: auto;
+    padding: 0vw; /* Use viewport width for padding */
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
   }
+
+  .grouped-button {
+    width: calc(100% - 0.5vw); /* Full width of the grid minus the gap */
+    height: 7.5vh; /* Same height as word buttons in portrait mode */
+    font-size: 2vw; /* Responsive font size */
+    grid-column: span 4; /* Span all columns in the grid */
+  }
+}
 }
