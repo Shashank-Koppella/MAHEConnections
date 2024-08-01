@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
             `.grouped-button[data-group="${group}"]`
         );
         const groupNames = {
-            '1': 'Places in Marena',
+            '1': 'Endings of lab softwares',
             '2': 'Places in ACAD',
             '3': 'Things found in Siri',
             '4': 'Words starting with first year subjects'
