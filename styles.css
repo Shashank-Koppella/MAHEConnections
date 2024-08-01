@@ -369,41 +369,31 @@ body {
     height: 7.5vh; /* Adjust as needed */
     font-size: 3vw;
   }
-}
 
-@media screen and (orientation: portrait) {
   .option-button {
-    width: 12.0vw; /* Reduced width for portrait mode */
-    height: 1.5vh; /* Adjust as needed */
+    width: 12.0vw; /* Consistent width for option buttons in portrait mode */
+    height: 6vh; /* Set a consistent height */
     font-size: 2vw;
   }
-}
 
-@media screen and (orientation: portrait) {
   .option-button.deselect-all {
-    width: 12.0vw; /* Reduced width for portrait mode */
-    height: 5vh; /* Adjust as needed */
+    width: 12.0vw; /* Same width for 'Deselect All' button */
+    height: 6vh; /* Same height as other option buttons */
     font-size: 2vw;
   }
-}
 
-@media screen and (orientation: portrait) {
   .lives-container .life-icon {
-    width: 10.0vw; /* Reduced width for portrait mode */
-    height: 6vh; /* Adjust as needed */
+    width: 10.0vw; /* Adjusted width for portrait mode */
+    height: 5vh; /* Adjusted height for portrait mode */
     font-size: 1.5vw;
   }
-}
 
-@media screen and (orientation: portrait) {
-  .title .main{
-    font-size: 11vw;
+  .title .main {
+    font-size: 11vw; /* Adjust font size for portrait mode */
   }
-}
 
-@media screen and (orientation: portrait) {
-  .title .sub{
-    font-size: 11vw;
+  .title .sub {
+    font-size: 11vw; /* Adjust font size for portrait mode */
   }
 }
 
