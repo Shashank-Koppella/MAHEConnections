@@ -372,13 +372,13 @@ body {
 
   .option-button {
     width: 12.0vw; /* Consistent width for option buttons in portrait mode */
-    height: 6vh; /* Consistent height for option buttons */
+    height: 4.5vh; /* Reduced height for portrait mode */
     font-size: 2vw;
   }
 
   .option-button.deselect-all {
     width: 12.0vw; /* Same width for 'Deselect All' button */
-    height: 6vh; /* Same height as other option buttons */
+    height: 4.5vh; /* Same reduced height */
     font-size: 2vw;
   }
 
@@ -397,6 +397,8 @@ body {
   }
 
   .grid-container {
-    margin-bottom: 4vh; /* Added extra gap between the grid and options buttons */
+    margin-bottom: 6vh; /* Added extra gap between the grid and options buttons */
+    display: flex; /* Ensure margin is applied correctly */
+    flex-direction: column;
   }
 }
