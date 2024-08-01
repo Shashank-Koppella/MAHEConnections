@@ -92,23 +92,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const clickedButtons = Array.from(buttons).filter((button) => button.classList.contains('clicked'));
         if (clickedButtons.length !== maxClicks) return false; // Ensure exactly 4 buttons are clicked
         const groups = new Set(clickedButtons.map((button) => button.getAttribute('group')));
-        return groups.size === 1; // True if all 4 buttons belong to the same group
+        return groups.size === 1;
     }
 
-    // New function to check if exactly 3 out of 4 clicked buttons are in the same group
     function isOneAway() {
         const clickedButtons = Array.from(buttons).filter((button) => button.classList.contains('clicked'));
         if (clickedButtons.length !== maxClicks) return false; // Ensure exactly 4 buttons are clicked
-        const groupCounts = {};
 
-        // Count occurrences of each group
+        const groupCounts = {};
         clickedButtons.forEach((button) => {
             const group = button.getAttribute('group');
-            if (groupCounts[group]) {
-                groupCounts[group]++;
-            } else {
-                groupCounts[group] = 1;
-            }
+            groupCounts[group] = (groupCounts[group] || 0) + 1;
         });
 
         // Check if any group has exactly 3 buttons
@@ -181,7 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
         resetButtonStates();
         shuffleButtons(); // Shuffle remaining word-buttons after grouping
         checkForCompletion(); // Check if all buttons have been grouped
-      }
+    }
 
     function resetButtonStates() {
         // Reset the state of remaining buttons
@@ -254,13 +248,11 @@ document.addEventListener('DOMContentLoaded', () => {
             moveButtonsToNextAvailableRow();
             clickCount = 0; // Reset click count after successful grouping
         } else {
+            if (isOneAway()) {
+                displayOneAwayMessage(); // Display 'One Away' message on specific condition
+            }
             lives--;
             updateLives();
-
-            // Display 'One Away' message only if 3 out of 4 buttons are from the same group
-            if (isOneAway()) {
-                displayOneAwayMessage();
-            }
         }
         updateButtonStates();
     });
