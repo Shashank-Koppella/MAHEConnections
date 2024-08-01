@@ -371,15 +371,17 @@ body {
   }
 
   .option-button {
-    width: 12.0vw; /* Consistent width for option buttons in portrait mode */
-    height: 4.5vh; /* Reduced height for portrait mode */
+    width: 12.0vw; /* Match width of 'Deselect All' button */
+    height: 4.5vh; /* Match height of 'Deselect All' button */
     font-size: 2vw;
+    padding: 2vh 1.2vw; /* Ensure padding is consistent */
   }
 
   .option-button.deselect-all {
-    width: 12.0vw; /* Same width for 'Deselect All' button */
-    height: 4.5vh; /* Same reduced height */
+    width: 12.0vw; /* Consistent width for 'Deselect All' button */
+    height: 4.5vh; /* Consistent height for 'Deselect All' button */
     font-size: 2vw;
+    padding: 2vh 1.2vw; /* Ensure padding is consistent */
   }
 
   .lives-container .life-icon {
@@ -411,14 +413,15 @@ body {
   }
 
   .grouped-button {
-    width: calc(100% - 0.5vw); /* Full width of the grid minus the gap */
-    height: 7.5vh; /* Same height as word buttons in portrait mode */
+    width: 75vw; /* Full width of the grid minus the gap */
+    height: 15vw; /* Increased height by 1.3 times */
     font-size: 4.5vw; /* Responsive font size */
     grid-column: span 4; /* Span all columns in the grid */
+    margin: 0 auto; /* Center horizontally */
   }
 
   .grouped-button .button-names {
     font-size: 2vw; /* Responsive font size */
   }
-
 }
+
