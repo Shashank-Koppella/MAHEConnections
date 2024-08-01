@@ -363,3 +363,11 @@ body {
     padding: 2vh 4vw;
   }
 }
+
+@media screen and (orientation: portrait) {
+  .word-button {
+    width: 20.0vw; /* Reduced width for portrait mode */
+    height: 12vh; /* Adjust as needed */
+    font-size: 2.4vw;
+  }
+}
