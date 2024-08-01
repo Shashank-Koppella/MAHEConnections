@@ -366,8 +366,8 @@ body {
 
 @media screen and (orientation: portrait) {
   .word-button {
-    width: 20.0vw; /* Reduced width for portrait mode */
-    height: 12vh; /* Adjust as needed */
-    font-size: 2.4vw;
+    width: 22.0vw; /* Reduced width for portrait mode */
+    height: 9vh; /* Adjust as needed */
+    font-size: 3vw;
   }
 }
