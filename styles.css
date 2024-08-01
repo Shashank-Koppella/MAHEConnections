@@ -170,7 +170,6 @@ body {
 }
 
 .option-button.deselect-all {
-  font-size: 0.7vw; /* Reduce font size for "Deselect all" */
   line-height: 1.2; /* Maintain line height */
   text-align: center;
   display: flex;
@@ -376,7 +375,7 @@ body {
   .option-button {
     width: 12.0vw; /* Reduced width for portrait mode */
     height: 1.5vh; /* Adjust as needed */
-    font-size: 4vw;
+    font-size: 2vw;
   }
 }
 
@@ -384,7 +383,7 @@ body {
   .option-button.deselect-all {
     width: 12.0vw; /* Reduced width for portrait mode */
     height: 5vh; /* Adjust as needed */
-    font-size: 4vw;
+    font-size: 2vw;
   }
 }
 
