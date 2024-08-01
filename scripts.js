@@ -114,8 +114,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const groupNames = {
             '1': 'Facilities Found in Marena',
             '2': 'Things Found in Hostel Reception',
-            '3': 'Bluedove Enterprises in HB3',
-            '4': 'Words starting with branches in MAHE '
+            '3': 'First Word of Bluedove Enterprises in HB3',
+            '4': 'Words Starting with Departments in MAHE '
         };
         const groupColors = {
             '1': '#FFC107', // Yellow for group 1
