@@ -8,6 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const title = document.getElementById('title'); // Title element
     const goodJobMessage = document.getElementById('good-job-message'); // Good job message
     const oneAwayMessage = document.getElementById('one-away-message'); // One away message
+    const howToPlayButton = document.getElementById('howToPlayButton'); // How to Play button
+    const howToPlayTextBox = document.getElementById('howToPlayTextBox'); // How to Play text box
+    const overlay = document.getElementById('overlay'); // Overlay for clicking outside
     let clickCount = 0;
     const maxClicks = 4;
     const groupedButtons = new Set(); // To track already grouped buttons
@@ -170,8 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
           button.remove(); // Remove from the DOM
         });
       
-        // Reinitialize buttons after removal
-        updateButtonStates();
+        // Reset button states after grouping
         resetButtonStates();
         shuffleButtons(); // Shuffle remaining word-buttons after grouping
         checkForCompletion(); // Check if all buttons have been grouped
@@ -183,6 +185,8 @@ document.addEventListener('DOMContentLoaded', () => {
             button.classList.remove('clicked');
             button.style.color = '#000'; // Reset text color
         });
+        clickCount = 0; // Reset click count
+        updateButtonStates(); // Update button states
     }
 
     function replaceButtonsWithGroupedButtons() {
@@ -204,83 +208,77 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function shuffleButtons() {
         const container = document.querySelector('.grid-container');
-        const visibleButtons = Array.from(
-            container.querySelectorAll('.word-button:not(.disabled)')
-        );
-
+        const visibleButtons = Array.from(container.querySelectorAll('.word-button:not(.disabled)'));
+    
+        // Log the visible buttons for debugging
+        console.log('Shuffling buttons:', visibleButtons);
+    
+        // Randomize button order
         for (let i = visibleButtons.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
+            // Swap the positions of buttons in the container
             container.appendChild(visibleButtons[j]);
         }
     }
 
-    // Initial shuffle
+    function checkForCompletion() {
+        if (document.querySelectorAll('.grouped-button').length === 4) {
+            goodJobMessage.style.display = 'block';
+        }
+    }
+
+    function showHowToPlay() {
+        howToPlayTextBox.style.display = 'block';
+        overlay.style.display = 'block'; // Show overlay
+    }
+
+    function hideHowToPlay() {
+        howToPlayTextBox.style.display = 'none';
+        overlay.style.display = 'none'; // Hide overlay
+    }
+
+    // Shuffle buttons when the page loads
     shuffleButtons();
 
+    // Event listeners
     buttons.forEach((button) => {
         button.addEventListener('click', () => {
-            if (!button.classList.contains('clicked') && clickCount < maxClicks) {
-                button.classList.add('clicked');
-                button.style.color = '#fff'; // Change text color to white
-                clickCount++;
-            } else if (button.classList.contains('clicked')) {
+            if (clickCount >= maxClicks && !button.classList.contains('clicked')) {
+                return; // Prevent additional clicks if 4 buttons are already selected
+            }
+
+            if (button.classList.contains('clicked')) {
                 button.classList.remove('clicked');
                 button.style.color = '#000'; // Reset text color
                 clickCount--;
+            } else {
+                button.classList.add('clicked');
+                button.style.color = '#FFFFFF'; // Change color on click
+                clickCount++;
             }
             updateButtonStates();
         });
     });
 
-    deselectAllButton.addEventListener('click', () => {
-        buttons.forEach((button) => {
-            if (button.classList.contains('clicked')) {
-                button.classList.remove('clicked');
-                button.style.color = '#000'; // Reset text color
-            }
-        });
-        clickCount = 0;
-        updateButtonStates();
-    });
-
     submitButton.addEventListener('click', () => {
         if (areAllClickedInSameGroup()) {
             moveButtonsToNextAvailableRow();
-            clickCount = 0; // Reset click count after successful grouping
+        } else if (isOneAway()) {
+            oneAwayMessage.style.display = 'block';
+            setTimeout(() => {
+                oneAwayMessage.style.display = 'none';
+            }, 1500);
         } else {
-            if (isOneAway()) {
-                displayOneAwayMessage(); // Display 'One Away' message on specific condition
-            }
             lives--;
             updateLives();
         }
-        updateButtonStates();
     });
 
-    shuffleButton.addEventListener('click', () => {
-        shuffleButtons();
-    });
+    shuffleButton.addEventListener('click', shuffleButtons);
 
-    function replaceTitle() {
-        title.innerHTML = '<span style="color: #000;">MAHE</span> CONNECTIONS';
-        title.style.textAlign = 'center'; // Center the text
-    }
+    deselectAllButton.addEventListener('click', resetButtonStates);
 
-    function displayOneAwayMessage() {
-        oneAwayMessage.style.display = 'block';
-        setTimeout(() => {
-            oneAwayMessage.style.display = 'none';
-        }, 1500);
-    }
-
-    function checkForCompletion() {
-        const remainingWordButtons = Array.from(document.querySelectorAll('.word-button:not(.disabled)'));
-
-        if (remainingWordButtons.length === 0 && lives > 0) {
-            setTimeout(() => {
-                goodJobMessage.style.display = 'block';
-                replaceTitle();
-            }, 2000);
-        }
-    }
+    howToPlayButton.addEventListener('click', showHowToPlay);
+    
+    overlay.addEventListener('click', hideHowToPlay);
 });
