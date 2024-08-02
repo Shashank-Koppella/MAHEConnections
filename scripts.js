@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const deselectAllButton = document.querySelector('.option-button:nth-child(2)'); // Deselect all button
     const submitButton = document.querySelector('.option-button:nth-child(3)'); // Submit button
     const livesContainer = document.querySelector('.lives-container'); // Lives container
+    const connectionsButton = document.querySelector('.back-button');
     const gameOverMessage = document.getElementById('game-over-message'); // Game over message
     const title = document.getElementById('title'); // Title element
     const goodJobMessage = document.getElementById('good-job-message'); // Good job message
@@ -14,6 +15,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let clickCount = 0;
     const maxClicks = 4;
     const groupedButtons = new Set(); // To track already grouped buttons
+
+    connectionsButton.addEventListener('click', () => {
+        window.location.href = 'https://shashank-koppella.github.io/Mahe-Times-Home-Page/home.html';
+    });
+
     let lives = 4; // Initial number of lives
 
     function updateLives() {
