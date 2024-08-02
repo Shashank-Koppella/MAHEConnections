@@ -255,7 +255,7 @@ body {
   background-color: black;
   color: white;
   padding: 1vh 2vw; 
-  border-radius: 0.5vw; /
+  border-radius: 0.5vw; 
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   font-size: 1vw; 
   font-weight: bold;
@@ -386,7 +386,7 @@ body {
 
   .lives-container .life-icon {
     width: 10.0vw; 
-    height: 5vh; /
+    height: 5vh; 
     font-size: 1.5vw;
   }
 
@@ -395,7 +395,7 @@ body {
   }
 
   .title .sub {
-    font-size: 11vw; /
+    font-size: 11vw; 
   }
 
   .grid-container {
