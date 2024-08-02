@@ -60,18 +60,27 @@ document.addEventListener('DOMContentLoaded', () => {
     function revealAllGroups() {
         const groupedButtonElems = Array.from(document.querySelectorAll('.grouped-button')); // Get all grouped buttons
         let delay = 0; // Initial delay
-
+    
         groupedButtonElems.forEach((groupedButton) => {
-            setTimeout(() => {
-                // Ensure the button is visible and revealed
-                groupedButton.classList.remove('hidden');
-                groupedButton.classList.add('revealed');
-                groupedButton.style.opacity = '1'; // Ensure opacity is set to 1 for visibility
-            }, delay); // Apply the current delay
-
-            delay += 1000; // Increment the delay for the next button
+            if (groupedButton.classList.contains('submitted')) {
+                // Skip animation for previously submitted buttons
+                groupedButton.style.opacity = '1'; // Ensure visibility
+            } else {
+                // Apply animation only to newly revealed buttons
+                setTimeout(() => {
+                    groupedButton.classList.remove('hidden');
+                    groupedButton.classList.add('revealed');
+                    groupedButton.style.opacity = '1'; // Ensure opacity is set to 1 for visibility
+                    // Remove 'newly-added' class if it was added during this function call
+                    groupedButton.classList.remove('newly-added');
+                }, delay); // Apply the current delay
+    
+                delay += 1000; // Increment the delay for the next button
+            }
         });
     }
+    
+    
 
     function updateButtonStates() {
         if (clickCount === maxClicks) {
@@ -128,38 +137,42 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         const groupName = groupNames[group] || `Group ${group}`; // Get the group name or default
         const groupColor = groupColors[group] || '#d0d0d0'; // Default color if not defined
-
+    
         const gridContainer = document.querySelector('.grid-container');
-
+    
         if (existingGroupedButton) {
             return;
         }
-
+    
         const groupedButton = document.createElement('button');
-        groupedButton.className = 'grouped-button hidden'; // Start hidden for animation
+        groupedButton.className = 'grouped-button hidden newly-added'; // Start hidden for animation and mark as newly added
         groupedButton.setAttribute('data-group', group);
-        groupedButton.style.gridRow = 'span 1'; // Ensure it occupies one grid row
-        groupedButton.style.gridColumn = 'span 4'; // Ensure it occupies full width
         groupedButton.style.backgroundColor = groupColor; // Set the background color based on group
-
+    
         const groupNameElem = document.createElement('div');
         groupNameElem.textContent = groupName;
         groupedButton.appendChild(groupNameElem);
-
+    
         const buttonNamesElem = document.createElement('div');
         buttonNamesElem.className = 'button-names';
         buttonNamesElem.textContent = buttonNames.join(', ');
         groupedButton.appendChild(buttonNamesElem);
-
+    
         // Append the grouped button to the top of the grid container
         gridContainer.prepend(groupedButton); // Use prepend to add the button to the top
-        groupedButtons.add(groupedButton);
-
-        setTimeout(() => {
+    
+        // Ensure the button is added to the DOM before triggering animation
+        requestAnimationFrame(() => {
+            // Remove the 'newly-added' class if it exists, after animation has been applied
             groupedButton.classList.remove('hidden');
             groupedButton.classList.add('revealed');
-        }, 0);
+            groupedButton.style.opacity = '1'; // Ensure opacity is set to 1 for visibility
+        });
+    
+        groupedButtons.add(groupedButton);
     }
+    
+    
 
     function moveButtonsToNextAvailableRow() {
         const clickedButtons = Array.from(buttons).filter((button) => button.classList.contains('clicked'));
@@ -206,19 +219,25 @@ document.addEventListener('DOMContentLoaded', () => {
         allButtons.forEach((btn) => btn.remove());
     }
 
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+        }
+        return array;
+    }
+    
     function shuffleButtons() {
         const container = document.querySelector('.grid-container');
         const visibleButtons = Array.from(container.querySelectorAll('.word-button:not(.disabled)'));
+        
+        // Shuffle the visible buttons
+        const shuffledButtons = shuffleArray(visibleButtons.slice());
     
-        // Log the visible buttons for debugging
-        console.log('Shuffling buttons:', visibleButtons);
-    
-        // Randomize button order
-        for (let i = visibleButtons.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            // Swap the positions of buttons in the container
-            container.appendChild(visibleButtons[j]);
-        }
+        // Re-append the shuffled buttons
+        shuffledButtons.forEach(button => {
+            container.appendChild(button);
+        });
     }
 
     function checkForCompletion() {
@@ -260,19 +279,31 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+
     submitButton.addEventListener('click', () => {
-        if (areAllClickedInSameGroup()) {
-            moveButtonsToNextAvailableRow();
-        } else if (isOneAway()) {
-            oneAwayMessage.style.display = 'block';
-            setTimeout(() => {
-                oneAwayMessage.style.display = 'none';
-            }, 1500);
+        const clickedButtons = Array.from(buttons).filter((button) => button.classList.contains('clicked'));
+    
+        // Immediately remove a life if not in a valid group
+        if (!areAllClickedInSameGroup()) {
+            if (isOneAway()) {
+                oneAwayMessage.style.display = 'block';
+                // Remove a life immediately
+                lives--;
+                updateLives();
+                // Hide the "One Away" message after the duration
+                setTimeout(() => {
+                    oneAwayMessage.style.display = 'none';
+                }, 1500);
+            } else {
+                lives--;
+                updateLives();
+            }
         } else {
-            lives--;
-            updateLives();
+            moveButtonsToNextAvailableRow();
         }
     });
+    
+    
 
     shuffleButton.addEventListener('click', shuffleButtons);
 
