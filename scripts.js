@@ -131,8 +131,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const existingGroupedButton = document.querySelector(`.grouped-button[data-group="${group}"]`);
         const groupNames = {
             '1': 'Facilities Found in Marena',
-            '2': 'Things Found in Hostel Reception',
-            '3': 'First Word of Bluedove Shops in HB3',
+            '2': 'Spots Outside Campus',
+            '3': 'Starting of Corporations in Campus',
             '4': 'Words Starting with Dpts in MAHE '
         };
         const groupColors = {
